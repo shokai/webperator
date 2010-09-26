@@ -29,8 +29,9 @@ before do
   }
 end
 
-get '/' do
-  @mes = 'root'
+get '/find' do
+  url=Page.limit(1).find_or_create_by()
+  @mes = url.to_json
 end
 
 post '/page' do
