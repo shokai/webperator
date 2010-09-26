@@ -2,6 +2,7 @@ require 'rubygems'
 
 class User
   include Mongoid::Document
+  field :user_id
   field :name, :default => ""
   field :created_at, :type => Integer, :default => Time.now.to_i
 end
