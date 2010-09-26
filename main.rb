@@ -29,23 +29,33 @@ before do
   }
 end
 
-get '/find' do
-  url=Page.limit(1).find_or_create_by()
-  @mes = url.to_json
+get '/find/:user_id' do
+  user_id=params[:user_id]
+  unless user_id
+    status 403
+    @mes {
+      :error=>'"user_id" required'
+    }.to_json
+  else
+    url=Page.limit(1).find_or_create_by(:user_id=>user_id)
+    @mes = url.to_json
+  end
 end
 
 post '/page' do
   url = params['url']
+  user_id=params['user_id']
   unless url
     status 403
     @mes = {
       :error => '"url" required'
     }.to_json
   else
-    page = Page.new(:url => url) # あとでuserも保存する
+    page = Page.new(:url => url,:user_id => user_id)
     page.save
     @mes = {
-      :url => url
+      :url => url,
+      :user_id => user_id
     }.to_json
   end
 end
