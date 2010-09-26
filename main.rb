@@ -29,6 +29,7 @@ before do
   }
 end
 
+# get user's last URL
 get '/find/:user_id' do
   user_id=params[:user_id]
   if user_id==''
@@ -42,20 +43,47 @@ get '/find/:user_id' do
   end
 end
 
+# persist user account
+post '/register' do
+  user_id=params['user_id']
+  password=params['password']
+  name=params['name']
+
+  if((user_id=='') or (password=='') or (name==''))
+    @mes = {
+      :error => '"user_id" or "password" or "name" required'
+    }.to_json
+  else
+    now_time=Time.now.to_i
+    user=User.new(:user_id=>user_id,:password=>password,:name=>name,:created_at=>now_time)
+    user.save
+    @mes = {
+      :result => 'success',
+      :user_id => user_id,
+      :name => name,
+      :password => password,
+      :created_at => now_time
+    }.to_json
+  end
+end
+
+# persist URL info
 post '/page' do
   url = params['url']
   user_id=params['user_id']
   if((url=='') or (user_id==''))
     status 403
     @mes = {
-      :error => '"url" required'
+      :error => '"url" or "user_id" required'
     }.to_json
   else
-    page = Page.new(:url => url,:user_id => user_id)
+    now_time=Time.now.to_i
+    page = Page.new(:url => url,:user_id => user_id, :created_at => now_time)
     page.save
     @mes = {
       :url => url,
-      :user_id => user_id
+      :user_id => user_id,
+      :created_at => now_time
     }.to_json
   end
 end
