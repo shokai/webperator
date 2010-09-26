@@ -92,3 +92,18 @@ get '/page' do
   # 最後に見たページ
 end
 
+# get user's playlist
+get '/playlist/:user_id' do
+  user_id=params[:user_id]
+  if(user_id=='')
+    status 403
+    @mes = {
+      :error => '"user_id" required'
+    }.to_json
+  else 
+    #(:all, :conditions => { :first_name => "Syd" })
+    Page.desc(:created_at)
+    result=Page.all(:conditions=>{:user_id=>user_id})
+    @mes = result.to_json
+  end
+end
