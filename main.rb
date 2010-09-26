@@ -31,10 +31,10 @@ end
 
 get '/find/:user_id' do
   user_id=params[:user_id]
-  unless user_id
+  if user_id==''
     status 403
-    @mes {
-      :error=>'"user_id" required'
+    @mes = {
+      :error => '"user_id" required'
     }.to_json
   else
     url=Page.limit(1).find_or_create_by(:user_id=>user_id)
@@ -45,7 +45,7 @@ end
 post '/page' do
   url = params['url']
   user_id=params['user_id']
-  unless url
+  if((url=='') or (user_id==''))
     status 403
     @mes = {
       :error => '"url" required'
@@ -63,3 +63,4 @@ end
 get '/page' do
   # 最後に見たページ
 end
+
