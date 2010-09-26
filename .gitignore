@@ -1,0 +1,7 @@
+
+.DS_Store
+*~
+.fuse*
+config.yaml
+*.log
+.bundle
