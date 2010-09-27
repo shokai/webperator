@@ -88,8 +88,9 @@ post '/page' do
   end
 end
 
-get '/page' do
-  # 最後に見たページ
+get '/user/:user_id' do
+  user_id=params[:user_id]
+  erb :tv,:locals => {:hoge => 'hogehiko',:user_id => user_id}
 end
 
 # get user's playlist
